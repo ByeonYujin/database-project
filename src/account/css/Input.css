@@ -1,0 +1,100 @@
+.input-div {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: 16px auto;
+    margin: 0;
+    padding: 5px 0;
+    border-bottom: 2px solid #d9d9d9;
+}
+
+.input-div.one {
+    margin-top: 0;
+}
+
+.input-div:before, .input-div:after{
+	content: '';
+	position: absolute;
+	bottom: -2px;
+	width: 0%;
+	height: 2px;
+	background-color: #38d39f;
+	transition: .4s;
+}
+
+.input-div:before{
+	right: 50%;
+}
+
+.input-div:after{
+	left: 50%;
+}
+
+.input-div.text-up:before, .input-div.text-up:after{
+	width: 50%;
+}
+
+.input-div.invalid:before, .input-div.invalid:after {
+    background-color: red;
+}
+
+.input-div i {
+    color: #d9d9d9;
+    margin: auto;
+    transition: .3s;
+}
+
+.input-div.text-up i {
+    color: #38d39f;
+}
+
+.input-div.text-up.invalid i {
+    color: red;
+}
+
+.input-div > div {
+    position: relative;
+    height: 45px;
+}
+
+.input-div > div > h5,h6 {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    transition: .3s;
+}
+
+.input-div > div > input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 95%;
+    height: 70%;
+
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0.5rem 0.2rem;
+    margin: 10px 0.5rem;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.input-div > div > input:invalid {
+    box-shadow: 0 0 0 red;
+}
+
+
+.input-div.text-up > div > h5 {
+    top: -5px;
+    font-size: 15px;
+}
+
+.input-div.text-up > div > h6 {
+    top: -2px;
+    font-size: 12px;
+}

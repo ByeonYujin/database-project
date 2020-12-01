@@ -1,0 +1,193 @@
+#slideBox {
+    font-family: 'Montserrat', 'Nanum Gothic', sans-serif;
+    width: 850px;
+    height: 600px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#slideOverlay {
+    position: relative;
+    overflow: hidden;
+
+    left: 0;
+    width: 50%;
+    height: 100%;
+}
+
+#signUp {
+    transform: translateX(-20%);
+    transition-duration: 1s;
+}
+
+#signIn {
+    transform: translateX(20%);
+    transition-duration: 1s;
+}
+
+#slideOverlay.slideRight {
+  animation-name: move-slide-right;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+@keyframes move-slide-right {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: 50%;
+  }
+}
+
+#slideOverlay.slideRight #signIn {
+  transform: translateX(0);
+  transition-duration: 1s;
+}
+
+#slideOverlay.slideLeft {
+  animation-name: move-slide-back-right;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+@keyframes move-slide-back-right {
+  0% {
+    left: 50%;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+#slideOverlay.slideLeft #signUp {
+  transform: translateX(0%);
+  transition-duration: 1s;
+}
+
+
+#innerOverlay {
+    position: absolute;
+    width: 200%;
+    display: flex;
+}
+
+#innerOverlay.slideRight {
+    animation-name: move-slide-left;
+    animation-fill-mode: forwards;
+    animation-duration: 1s;
+}
+@keyframes move-slide-left {
+    0% {
+      left: 0;
+    }
+    100% {
+      left: -100%;
+    }
+}
+
+#innerOverlay.slideLeft {
+    animation-name: move-slide-back-left;
+    animation-fill-mode: forwards;
+    animation-duration: 1s;
+}
+@keyframes move-slide-back-left {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+
+#innerOverlay > div {
+    flex: 1;
+}
+
+#accountForms {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -100;
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    align-items: center;
+}
+
+#accountForms > div {
+    flex: 1;
+    background-color: #777;
+}
+  
+#signUpForm, #signInForm {
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+#signUpForm .holder {
+    margin: 1.2rem auto 0 auto;
+    transform: translateX(0);
+    transition-duration: 1s;
+}
+
+#signUpForm.slideRight .holder {
+    transform: translateX(-100%);
+    transition-duration: 1s;
+}
+  
+#signInForm .holder {
+    margin: 0 auto;
+    transform: translateX(0);
+    transition-duration: 1s;
+}
+  
+#signInForm.slideLeft .holder {
+    transform: translateX(100%);
+    transition-duration: 1s;
+}
+
+#slideBox {
+    background-color: #fafafa;
+    border-radius: 20px;
+    box-shadow: 10px 10px 13px -6px rgba(0, 0, 0, 0.35);
+}
+  
+#accountForms > div {
+    background-color: #fafafa;
+}
+  
+#slideOverlay {
+    background: linear-gradient(to bottom, #7D2248 0%, #ca5f8c 100%);
+    border: none;
+    border-radius: 20px;
+}
+  
+#signUp, #signIn {
+    text-align: center;
+    padding: 22% 40px;
+    color: #fff;
+}
+
+#signUp > h1, #signIn > h1 {
+    font-weight: 600;
+}
+
+#signUp button,
+#signIn button {
+  margin-top: 20px;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: transparent;
+  border-radius: 20px;
+  border: 1px solid white;
+  padding: 10px 40px;
+  cursor: pointer;
+}
+
+#signUp button:focus,
+#signIn button:focus {
+  outline: none;
+}
