@@ -1,22 +1,18 @@
 import React, { Component } from "react";
 
-import AccountForm from "./Form";
-import SignIn, { SignInInputs } from './SignIn';
-import SignUp, { SignUpInputs } from './SignUp';
+import SignIn from './SignInForm';
+import SignUp from './SignUpForm';
 
-import "./css/Container.css";
+import Styles from "./css/Container.module.scss";
 
-export const LEFT = 'left'
-export const RIGHT = 'right'
-
-const SignInForm = AccountForm(SignIn)
-const SignUpForm = AccountForm(SignUp)
+const LEFT = 'left'
+const RIGHT = 'right'
 
 export default class LoginContainer extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            slided: LEFT
+            slided: RIGHT
         }
     }
 
@@ -29,34 +25,37 @@ export default class LoginContainer extends Component {
     getClasses = () => {
         switch(this.state.slided) {
             case LEFT:
-                return "slideLeft"
+                return Styles.slideLeft
             case RIGHT:
-                return "slideRight"
+                return Styles.slideRight
+            default:
+                break
         }
+        return
     }
 
     render() {
-        return <div id="slideBox">
-            <div id="slideOverlay" className={ this.getClasses() }>
-                <div id="innerOverlay" className={ this.getClasses() }>
-                    <div id="signUp">
+        return <div id={ Styles.slideBox }>
+            <div id={ Styles.slideOverlay } className={ this.getClasses() }>
+                <div id={ Styles.innerOverlay } className={ this.getClasses() }>
+                    <div id={ Styles.signUp }>
                         <h1>Welcome Back!</h1>
                         <p>To keep connected with us pelase login with your personal info.</p>
                         <button onClick={ () => this.moveSlide(RIGHT) }>Sign In</button>
                     </div>
-                    <div id="signIn">
+                    <div id={ Styles.signIn }>
                         <h1>Hello, Friend!</h1>
                         <p>Enter your personal details and start your journey with us.</p>
                         <button onClick={ () => this.moveSlide(LEFT) }>Sign Up</button>
                     </div>
                 </div>
             </div>
-            <div id="accountForms">
-                <div id="signInForm" className={ this.getClasses() }>
-                    <SignInForm inputs={ SignInInputs }/>
+            <div id={ Styles.accountForms }>
+                <div id={ Styles.signInForm } className={ this.getClasses() }>
+                    <SignIn/>
                 </div>
-                <div id="signUpForm" className={ this.getClasses() }>
-                    <SignUpForm inputs={ SignUpInputs }/>
+                <div id={ Styles.signUpForm } className={ this.getClasses() }>
+                    <SignUp/>
                 </div>
             </div>
         </div>

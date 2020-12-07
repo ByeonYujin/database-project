@@ -1,7 +1,7 @@
 #slideBox {
     font-family: 'Montserrat', 'Nanum Gothic', sans-serif;
-    width: 850px;
-    height: 600px;
+    width: 900px;
+    height: 700px;
 
     position: absolute;
     top: 50%;
@@ -32,6 +32,11 @@
   animation-name: move-slide-right;
   animation-fill-mode: forwards;
   animation-duration: 1s;
+
+  #signIn {
+    transform: translateX(0);
+    transition-duration: 1s;
+  }
 }
 @keyframes move-slide-right {
   0% {
@@ -42,15 +47,15 @@
   }
 }
 
-#slideOverlay.slideRight #signIn {
-  transform: translateX(0);
-  transition-duration: 1s;
-}
-
 #slideOverlay.slideLeft {
   animation-name: move-slide-back-right;
   animation-fill-mode: forwards;
   animation-duration: 1s;
+
+  #signUp {
+    transform: translateX(0%);
+    transition-duration: 1s;
+  }
 }
 @keyframes move-slide-back-right {
   0% {
@@ -60,12 +65,6 @@
     left: 0;
   }
 }
-
-#slideOverlay.slideLeft #signUp {
-  transform: translateX(0%);
-  transition-duration: 1s;
-}
-
 
 #innerOverlay {
     position: absolute;
@@ -115,6 +114,7 @@
     width: 100%;
     overflow: hidden;
     align-items: center;
+    justify-content: center;
 }
 
 #accountForms > div {
@@ -128,7 +128,7 @@
 }
 
 #signUpForm .holder {
-    margin: 1.2rem auto 0 auto;
+    margin: 3.6rem auto 0 auto;
     transform: translateX(0);
     transition-duration: 1s;
 }
@@ -167,7 +167,7 @@
   
 #signUp, #signIn {
     text-align: center;
-    padding: 22% 40px;
+    padding: 25% 40px;
     color: #fff;
 }
 

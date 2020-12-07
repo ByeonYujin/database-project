@@ -1,10 +1,15 @@
-import './App.css';
+import React from "react";
 
-import AccountContainer from "./account/Container" 
+import './App.css';
+//import Navigation from "./main/Navigation";
+import AccountContainer from "./account/Container";
 
 function App() {
   return (
-    <AccountContainer />
+    <React.Fragment>
+      <AccountContainer/>
+    </React.Fragment>
+    // 
   );
 }
 
