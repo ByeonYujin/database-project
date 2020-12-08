@@ -8,7 +8,9 @@ const sequelize = new Sequelize(
     {
         host: config.host,
         dialect: config.dialect,
-        pool: config.pool
+        pool: config.pool,
+
+        logging: false
     }
 );
 
