@@ -5,6 +5,8 @@ const router = require("express").Router();
 
 router.post("/login", controller.signIn);
 router.post("/register", controller.signUp);
+router.post("/signed", controller.dupeAjax);
+
 router.get("/test", isAuth, controller.test);
 
 module.exports = (app) => {

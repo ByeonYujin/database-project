@@ -44,7 +44,7 @@ exports.signIn = (req, res, next) => {
     (req, res, next);
 };
 
-exports.signUp = async (req, res, next) => {
+exports.signUp = async (req, res) => {
     
     const schema = {
         email: Joi.string().email(), // 유효한 이메일
@@ -66,22 +66,46 @@ exports.signUp = async (req, res, next) => {
         }
     })
     if (user) {
-        return res.status(400).send({ message: "already signed" })
+        return res.status(400).send({ message: "already signed" }) // 이미 가입된 상태
     } 
     else {
+        // 데이터베이스에 계정 정보 추가
         db.user.create({
             ...value,
-            password: bcrypt.hashSync(value.password, bcrypt.genSaltSync(saltRound))
+            password: bcrypt.hashSync(value.password, bcrypt.genSaltSync(saltRound)) // 패스워드는 해시하여 저장
         })
         .then(result => {
-            return res.status(200).send({ email: value.email })
+            return res.status(200).send({ email: value.email }) // 가입 성공
         })
         .catch(err => {
             console.log(err)
-            return res.status(500).send()
+            return res.status(500).send() // 가입 실패
+
+            /**
+             * 만약 실패하면.. 롤백해야 되지만 시간 관계상 생략
+             */
         })
     }
+}
 
+exports.dupeAjax = async (req, res) => {
+    const { error, value } = Joi.object({ email: Joi.string().email() }).validate(req.body)
+    if (error) {
+        return res.status(400).send({ message: "invalid email" }) // 유효하지 않은 신청
+    }
+    else {
+        const user = await db.user.findOne({
+            where: {
+                email: value.email
+            }
+        })
+        if (user) {
+            return res.status(400).send({ message: "already signed" }) // 이미 가입된 상태
+        }
+        else {
+            return res.status(200).send()
+        }
+    }
 }
 
 exports.test = (req, res) => {
