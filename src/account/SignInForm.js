@@ -87,7 +87,7 @@ export default class SignInForm extends Component {
             .then(res => {
                 if (res.status === 200) {
                     localStorage.setItem("token", res.data.accessToken)
-                    history.push("/test") // To main page
+                    window.location.replace('https://www.google.com') // To main page
     
                     request("get", "auth/test")
                     .then(res => console.log(res.data)) // 토큰 인증 테스트 (회원 기반 서비스에 사용)

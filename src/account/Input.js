@@ -59,7 +59,11 @@ class AccountInput extends Component {
         if (this.state.focused || this.state.data.length > 0) {
             classes.push( Styles.text_up )
         }
-        if (this.props.submitted && (this.props.failed || !this.isValid())) {
+        if (
+            this.props.submitted && (this.props.failed || !this.isValid())
+            ||
+            this.props.forceInvalid
+           ) {
             classes.push( Styles.invalid )
         }
 

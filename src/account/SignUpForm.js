@@ -13,10 +13,13 @@ const CONFIRM = "confirm"
 const ZIPCODE = "zipcode"
 const SI = "si", GUN = "gun", GU = "gu"
 
+const ALREADY_SIGNED = "already signed"
+
 const ERR_MSG = {
     [EMAIL] : {
         [ERROR.EMPTY]: "이메일을 입력해주세요.",
-        [ERROR.NOT_EMAIL]: "이메일을 정확히 입력해주세요."
+        [ERROR.NOT_EMAIL]: "이메일을 정확히 입력해주세요.",
+        [ALREADY_SIGNED]: "이메일 중복 여부를 확인해주세요."
     },
     [PASSWORD] : {
         [ERROR.EMPTY] : "비밀번호를 입력해주세요."
@@ -42,10 +45,13 @@ const ERR_MSG = {
 
 const isNumberKey = (event) => {
     const key = String.fromCharCode(event.keyCode || event.which)  
-    if(!(/^[0-9]$/.test(key))) {
+    if(!(/^\d$/.test(key))) {
         event.preventDefault()
     }
 }
+
+const URL = "auth/register";
+const AJAX = "auth/signed";
 
 export default class SignUp extends Component {
     constructor(props) {
@@ -110,7 +116,7 @@ export default class SignUp extends Component {
 
         if (this.state.valid) {
             // Register action dispatched
-            request("post", "auth/register", {
+            request("post", URL, {
                 email: this.state[EMAIL],
                 password: this.state[PASSWORD],
 
@@ -119,7 +125,12 @@ export default class SignUp extends Component {
                 city: this.state[GUN],
                 town: this.state[GU]
             })
-            .then(res => console.log(res.data))
+            .then(res => {
+                console.log(res.data)
+
+                alert("성공적으로 회원가입되셨습니다. 로그인해주시기 바랍니다.")
+                window.location.reload() // Reload the login page
+            })
             .catch(err => console.log(err.response))
         }
         else {
@@ -133,7 +144,17 @@ export default class SignUp extends Component {
         const update = { submitted: this.state.submitted, onUpdate: this.updateCallback }
         const emailCallback = (event, self) => {
             self.handleBlur(event)
+
+            if (self.isValid()) {
+                request("post", AJAX, { email: self.state.data })
+                .catch(err => {
+                    self.setState({ err: err.response.data.message }, 
+                        () => self.props.onUpdate(self.props.name, self.state.data, self.state.err)
+                    )
+                })
+            }
         }
+        const signed = this.state.err[EMAIL] === ALREADY_SIGNED
 
         return (
         <form className={ `form-group ${ Styles.holder } ${ ContainerStyles.holder }` } onSubmit={ this.submit } noValidate>
@@ -141,10 +162,11 @@ export default class SignUp extends Component {
             <p>Write your information for registration</p>
             <Input { ...update } 
                 type="email" icon="user" name={ EMAIL } rules={ EMAIL_RULE } ref={ this.innerRef[EMAIL] }
+                forceInvalid={ signed }
                 inputProps={{ onBlur: emailCallback }}>
                     EMAIL
             </Input>
-            <br/>
+            { signed ? <p className={ Styles.errmsg }>이미 가입된 이메일입니다.</p> : <br/> }
             <Input { ...update } 
                 type="password" icon="lock" name={ PASSWORD } rules={ NOT_EMPTY_RULE } ref={ this.innerRef[PASSWORD] }
                 inputProps={{maxLength: "50"}}>
