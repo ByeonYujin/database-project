@@ -63,9 +63,15 @@
             top: 50%;
             transform: translateY(-50%);
             color: #999;
-            font-size: 1.2rem;
             text-transform: uppercase;
             transition: .3s;
+        }
+
+        h5 {
+            font-size: 1.2rem;
+        }
+        h6 {
+            font-size: 0.95rem;
         }
 
         input {

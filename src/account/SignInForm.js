@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { VALID, ERROR, EMAIL_RULE, NOT_EMPTY_RULE } from "./ValidationRules";
 import { ForwardInput as Input } from "./Input";
+import { request } from "../Axios";
+import history from "../history";
 
 import Styles from "./css/Form.module.scss";
 import ContainerStyles from "./css/Container.module.scss";
@@ -18,6 +20,8 @@ const ERR_MSG = {
     },
     LOGIN_FAILED : "이메일과 비밀번호를 다시 확인해주세요."
 }
+
+const URL = "auth/login";
 
 export default class SignInForm extends Component {
     constructor(props) {
@@ -46,6 +50,7 @@ export default class SignInForm extends Component {
                 ...state.err,
                 [caller]: err
             },
+            msg: "",
             submitted: false
         }), () => {
             let check = true
@@ -73,13 +78,29 @@ export default class SignInForm extends Component {
         this.setState({ submitted: true })
 
         if (this.state.valid) {
-            // Login action dispatched
             // Axios AJAX
+            request("post", URL, {
+                email: this.state[EMAIL],
+                password: this.state[PASSWORD]
+            }) 
             // Retrieve a result (login or failed)
-    
-            // if success -> save session info to global store and history push to main page 
-            // else -> login failed error
-            console.log(this.state)
+            .then(res => {
+                console.log(res)
+                if (res.success) {
+                    localStorage.setItem("token", res.token)
+                    history.push("/test")
+
+                    request("get", "auth/test").then(console.log)
+                }
+                else {
+                    this.setState({ msg: ERR_MSG.LOGIN_FAILED, valid: false })
+                    this.innerRef[EMAIL].current.focus()
+                }
+            })
+            .catch(err => {
+                console.log("ERROR")
+                console.log(err.message)
+            })
         }
         else {
             this.focusError()
@@ -89,7 +110,7 @@ export default class SignInForm extends Component {
     }
 
     render() {
-        const update = { submitted: this.state.submitted, onUpdate: this.updateCallback }
+        const update = { submitted: this.state.submitted, failed: this.state.msg === ERR_MSG.LOGIN_FAILED, onUpdate: this.updateCallback }
 
         return (
             <form className={ `form-group ${ Styles.holder } ${ ContainerStyles.holder }` } onSubmit={ this.submit } noValidate>

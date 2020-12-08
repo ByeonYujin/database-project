@@ -125,7 +125,6 @@ export default class SignUp extends Component {
 
     render() {
         const update = { submitted: this.state.submitted, onUpdate: this.updateCallback }
-        console.log(this.state.err )
 
         return (
         <form className={ `form-group ${ Styles.holder } ${ ContainerStyles.holder }` } onSubmit={ this.submit } noValidate>
