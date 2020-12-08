@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { VALID, ERROR, EMAIL_RULE, NOT_EMPTY_RULE, EQUAL_RULE, NUMBER_RULE } from "./ValidationRules";
+import { VALID, ERROR, EMAIL_RULE, NOT_EMPTY_RULE, EQUAL_RULE, NUMBER_RULE, PASSWORD_RULE, DIGIT_RULE } from "./ValidationRules";
 import { ForwardInput as Input } from "./Input";
 
 import Styles from "./css/Form.module.scss";
@@ -17,16 +17,17 @@ const ALREADY_SIGNED = "already signed"
 
 const ERR_MSG = {
     [EMAIL] : {
-        [ERROR.EMPTY]: "이메일을 입력해주세요.",
-        [ERROR.NOT_EMAIL]: "이메일을 정확히 입력해주세요.",
-        [ALREADY_SIGNED]: "이메일 중복 여부를 확인해주세요."
+        [ERROR.EMPTY] : "이메일을 입력해주세요.",
+        [ERROR.NOT_EMAIL] : "이메일을 정확히 입력해주세요.",
+        [ALREADY_SIGNED] : "이메일 중복 여부를 확인해주세요."
     },
     [PASSWORD] : {
-        [ERROR.EMPTY] : "비밀번호를 입력해주세요."
+        [ERROR.EMPTY] : "비밀번호를 입력해주세요.",
+        [ERROR.WEAK_PW] : "비밀번호를 양식에 맞게 작성해주세요."
     },
     [CONFIRM] : {
         [ERROR.EMPTY] : "비밀번호를 다시 한 번 입력해주세요.",
-        [ERROR.NOT_EQUAL] : "비밀번호가 확인란과 일치하지 않습니다."
+        [ERROR.NOT_EQUAL] : "확인란을 올바르게 작성해주세요."
     },
     [SI] : {
         [ERROR.EMPTY] : "시/도를 입력해주세요."
@@ -39,7 +40,8 @@ const ERR_MSG = {
     },
     [ZIPCODE] : {
         [ERROR.EMPTY] : "우편번호를 입력해주세요.",
-        [ERROR.NOT_NUM] : "올바른 우편번호를 입력해주세요."
+        [ERROR.NOT_NUM] : "올바른 우편번호를 입력해주세요.",
+        [ERROR.DIGIT] : "우편번호는 5자리여야 합니다."
     }
 }
 
@@ -68,7 +70,6 @@ export default class SignUp extends Component {
             [GUN]: "",
             [GU]: "",
 
-            valid: false,
             submitted: false,
             err: {},
             msg: ""
@@ -89,13 +90,7 @@ export default class SignUp extends Component {
                 [caller]: err
             },
             submitted: false
-        }), () => {
-            let check = true
-            for (let type in this.state.err) {
-                check &= this.state.err[type] ? false : true
-            }
-            this.setState({ valid: check })
-        })
+        }), () => this.checkCollaborativeRules(caller))
     }
 
     focusError = () => {
@@ -109,12 +104,33 @@ export default class SignUp extends Component {
         }
     }
 
+    checkCollaborativeRules = (caller) => {
+        if (caller === PASSWORD || caller === CONFIRM) {
+            if (EQUAL_RULE(this.state[PASSWORD], this.state[CONFIRM]) !== VALID) {
+                this.setState((state) => ({
+                    err: {
+                        ...state.err,
+                        [CONFIRM]: ERROR.NOT_EQUAL
+                    }
+                }))
+            }
+        }
+    }
+
+    isValid = () => {
+        for (let type in this.state.err) {
+            if (this.state.err[type]) return false
+        }
+        return true
+    }
+
     submit = (event) => {
         event.preventDefault()
- 
+        console.log(this.state.err)
+
         this.setState({ submitted: true })
 
-        if (this.state.valid) {
+        if (this.isValid()) {
             // Register action dispatched
             request("post", URL, {
                 email: this.state[EMAIL],
@@ -141,7 +157,7 @@ export default class SignUp extends Component {
     }
 
     render() {
-        const update = { submitted: this.state.submitted, onUpdate: this.updateCallback }
+        const update = { submitted: this.state.submitted, err: this.state.err, onUpdate: this.updateCallback }
         const emailCallback = (event, self) => {
             self.handleBlur(event)
 
@@ -154,7 +170,6 @@ export default class SignUp extends Component {
                 })
             }
         }
-        const signed = this.state.err[EMAIL] === ALREADY_SIGNED
 
         return (
         <form className={ `form-group ${ Styles.holder } ${ ContainerStyles.holder }` } onSubmit={ this.submit } noValidate>
@@ -162,20 +177,25 @@ export default class SignUp extends Component {
             <p>Write your information for registration</p>
             <Input { ...update } 
                 type="email" icon="user" name={ EMAIL } rules={ EMAIL_RULE } ref={ this.innerRef[EMAIL] }
-                forceInvalid={ signed }
+                forceHighlight={ ALREADY_SIGNED }
                 inputProps={{ onBlur: emailCallback }}>
                     EMAIL
             </Input>
-            { signed ? <p className={ Styles.errmsg }>이미 가입된 이메일입니다.</p> : <br/> }
+            { this.state.err[EMAIL] === ALREADY_SIGNED ? <p className={ Styles.errmsg }>이미 가입된 이메일입니다.</p> : <br/> }
             <Input { ...update } 
-                type="password" icon="lock" name={ PASSWORD } rules={ NOT_EMPTY_RULE } ref={ this.innerRef[PASSWORD] }
+                type="password" icon="lock" name={ PASSWORD } rules={ [NOT_EMPTY_RULE, PASSWORD_RULE] } ref={ this.innerRef[PASSWORD] }
+                forceHighlight={ ERROR.WEAK_PW }
                 inputProps={{maxLength: "50"}}>
                     PASSWORD
             </Input>
-            <br/>
+            { this.state.err[PASSWORD] === ERROR.WEAK_PW ? 
+                <p className={ Styles.errmsg }>6글자 이상, 숫자와 특수문자를 포함해야 합니다.</p> : <br/> }
             <Input { ...update } 
-                type="password" icon="check" name={ CONFIRM } 
-                rules={ [NOT_EMPTY_RULE, EQUAL_RULE(this.state[PASSWORD])] } 
+                type="password" 
+                name={ CONFIRM } 
+                icon={ (self) => (this.state.err[CONFIRM] === ERROR.NOT_EQUAL) ? "times" : "check" }
+                rules={ [NOT_EMPTY_RULE] } 
+                forceHighlight={ ERROR.NOT_EQUAL }
                 ref={ this.innerRef[CONFIRM] }>
                     PASSWORD CONFIRM
             </Input>
@@ -194,13 +214,13 @@ export default class SignUp extends Component {
             <br/>
             <Input { ...update } 
                 type="text" icon="map-marker-alt" name={ ZIPCODE } 
-                rules={ [NOT_EMPTY_RULE, NUMBER_RULE] } 
+                rules={ [NOT_EMPTY_RULE, NUMBER_RULE, DIGIT_RULE(5)] } 
                 ref={ this.innerRef[ZIPCODE] }
                 inputProps={{ onKeyPress: isNumberKey, maxLength: "5" }}>
                     ZIPCODE
             </Input>
             {
-                (!this.state.valid && this.state.submitted) ?
+                (!this.isValid() && this.state.submitted) ?
                 <p className={ Styles.errmsg }>
                     { this.state.msg }
                 </p>

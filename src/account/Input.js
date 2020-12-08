@@ -10,8 +10,7 @@ class AccountInput extends Component {
         super(props)
         this.state = {
             focused: false,
-            data: "",
-            err: ""
+            data: ""
         }
 
         this.inputProps = {}
@@ -23,14 +22,7 @@ class AccountInput extends Component {
                 this.inputProps[key] = this.props.inputProps[key]
             }
         }
-    }
-
-    componentDidMount() {
-        this.checkRules() // for initial state
-    }
-
-    updateData = (event) => {
-        this.setState({ data: event.target.value }, this.checkRules)
+        this.forceHighlight = Array.isArray(this.props.forceHighlight) ? this.props.forceHighlight : [ this.props.forceHighlight ]
     }
 
     checkRules = () => {
@@ -43,44 +35,49 @@ class AccountInput extends Component {
                 break
             }
         }
-        
-        this.setState({ err: msg }, () => {
-            this.props.onUpdate(this.props.name, this.state.data, this.state.err)
-        })
+
+        return msg
+    }
+
+    notifyChangesToParent = () => this.props.onUpdate(this.props.name, this.state.data, this.checkRules())
+
+    componentDidMount() {
+        // for initial state, notify initial error to parent
+        this.notifyChangesToParent()
+    }
+
+    updateData = (event) => {
+        this.setState({ data: event.target.value }, this.notifyChangesToParent)
     }
 
     isValid = () => {
-        return this.state.err.length <= 0
+        return typeof(this.props.err[this.props.name]) === 'undefined' || this.props.err[this.props.name].length <= 0
     }
 
-    getClasses = () => {
+    getClasses = (p) => {
         const classes = [ Styles.input_div ]
     
         if (this.state.focused || this.state.data.length > 0) {
             classes.push( Styles.text_up )
         }
-        if (
-            this.props.submitted && (this.props.failed || !this.isValid())
-            ||
-            this.props.forceInvalid
-           ) {
+
+        const fh = this.forceHighlight.includes(this.props.err[this.props.name])
+        if ( (this.props.submitted || fh) && !this.isValid() ) {
             classes.push( Styles.invalid )
         }
 
         return classes.join(' ')
     }
 
-    handleFocus = (event) => {
-        this.setState({ focused: true })
-    }
-    handleBlur = (event) => {
-        this.setState({ focused: false })
-    }
+    handleFocus = () => this.setState({ focused: true })
+    handleBlur = () => this.setState({ focused: false })
 
     render() {
+        const icon = (typeof(this.props.icon) === 'function') ? this.props.icon(this) : this.props.icon 
+
         return (
             <div className={ this.getClasses() }>
-                <i className={`fas fa-${ this.props.icon }`}></i>
+                <i className={`fas fa-${ icon }`}></i>
                 <div>
                     { !this.props.small ? <h5>{ this.props.children }</h5> : <h6>{ this.props.children }</h6> }
                     <input  type={ this.props.type }

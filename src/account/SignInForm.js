@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { VALID, ERROR, EMAIL_RULE, NOT_EMPTY_RULE } from "./ValidationRules";
 import { ForwardInput as Input } from "./Input";
 import { request } from "../Axios";
-import history from "../history";
 
 import Styles from "./css/Form.module.scss";
 import ContainerStyles from "./css/Container.module.scss";
@@ -30,7 +29,6 @@ export default class SignInForm extends Component {
             [EMAIL]: "",
             [PASSWORD]: "",
             
-            valid: false,
             submitted: false,
             err : {},
             msg : ""
@@ -52,13 +50,7 @@ export default class SignInForm extends Component {
             },
             msg: "",
             submitted: false
-        }), () => {
-            let check = true
-            for (let type in this.state.err) {
-                check &= this.state.err[type] ? false : true
-            }
-            this.setState({ valid: check })
-        })
+        }))
     }
 
     focusError = () => {
@@ -72,12 +64,19 @@ export default class SignInForm extends Component {
         }
     }
 
+    isValid = () => {
+        for (let type in this.state.err) {
+            if (this.state.err[type]) return false
+        }
+        return true
+    }
+
     submit = (event) => {
         event.preventDefault()
- 
+
         this.setState({ submitted: true })
 
-        if (this.state.valid) {
+        if (this.isValid()) {
             // Axios AJAX
             request("post", URL, {
                 email: this.state[EMAIL],
@@ -98,7 +97,15 @@ export default class SignInForm extends Component {
                 const res = err.response
 
                 if (res.status === 401) {
-                    this.setState({ msg: ERR_MSG.LOGIN_FAILED, valid: false })
+                    for (let rule of this.rulePriority) {
+                        this.setState(state => ({
+                            err: {
+                                ...state.err,
+                                [rule]: "invalid account" 
+                            }
+                        }))
+                    }
+                    this.setState({ msg: ERR_MSG.LOGIN_FAILED })
                     this.innerRef[EMAIL].current.focus()
                 }
                 else {
@@ -114,7 +121,7 @@ export default class SignInForm extends Component {
     }
 
     render() {
-        const update = { submitted: this.state.submitted, failed: this.state.msg === ERR_MSG.LOGIN_FAILED, onUpdate: this.updateCallback }
+        const update = { submitted: this.state.submitted, err: this.state.err, onUpdate: this.updateCallback }
 
         return (
             <form className={ `form-group ${ Styles.holder } ${ ContainerStyles.holder }` } onSubmit={ this.submit } noValidate>
@@ -129,7 +136,7 @@ export default class SignInForm extends Component {
                     PASSWORD
                 </Input>
                 {
-                    (!this.state.valid && this.state.submitted) ?
+                    (!this.isValid() && this.state.submitted) ?
                     <p className={ Styles.errmsg }>
                         { this.state.msg }
                     </p>
