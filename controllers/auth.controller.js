@@ -1,41 +1,33 @@
-const config = require("../config")
-const db = require("../models")
+const config = require("../config");
+const jwt = require("jsonwebtoken");
 
-const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt")
+const auth = require("../passport/passport.auth");
 
-exports.signIn = (req, res) => {
-    db.user.findOne({
-        where: {
-            email: req.body.email
+exports.signIn = (req, res, next) => {
+    auth.local((err, user) => {
+        if (err) {
+            return res.status(500).json({ message: err.message });
         }
-    })
-    .then(user => {
-        if (!user) {
-            return res.status(403).send({ msg: "Email Not Found" })
+        else if (!user) {
+            return res.status(401).json({ message: "login failed" });
         }
-
-        let pwValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
-        )
-        if (!pwValid) {
-            return res.status(401).send({ token: null, msg: "invalid password" })
-        }
-
-        const token = jwt.sign({ id: user.userId }, config.auth.jwtSecret, {
-            expiresIn: config.auth.expires
-        })
-
-        return res
-            .cookie("x_auth", token, {
-                maxAge: 1000 * 60 * 60,
-                httpOnly: true
+        else {
+            req.login(user, { session: false }, (err) => {
+                if (err) next(err);
+                else {
+                    const token = jwt.sign(
+                        { uid: user.userId }, 
+                        config.auth.jwtSecret, 
+                        { expiresIn: config.auth.expires }
+                    )
+                    return res.status(200).json({ token: token })
+                }
             })
-            .status(200)
-            .send({ accessToken: token, email: user.email })
+        }
     })
-    .catch(err => {
-        res.status(500).send({ msg: err.message })
-    })
-}
+    (req, res, next);
+};
+
+exports.test = (req, res, next) => {
+    res.send(req.user)
+};
