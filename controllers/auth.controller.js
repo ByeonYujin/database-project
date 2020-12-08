@@ -9,7 +9,7 @@ exports.signIn = (req, res, next) => {
             return res.status(500).json({ message: err.message });
         }
         else if (!user) {
-            return res.status(401).json({ message: "login failed" });
+            return res.status(200).json({ message: "login failed" });
         }
         else {
             req.login(user, { session: false }, (err) => {

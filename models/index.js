@@ -8,8 +8,6 @@ const sequelize = new Sequelize(
     {
         host: config.host,
         dialect: config.dialect,
-        operatorsAliases: false,
-        
         pool: config.pool
     }
 );

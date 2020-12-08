@@ -1,8 +1,7 @@
 const passport = require("passport")
 
-module.exports = {
-    local: (callback) => {
-        passport.authenticate("local", {session: false}, callback)
-    },
-    isAuth: passport.authenticate("jwt", { session: false })
+exports.local = (callback) => {
+    return passport.authenticate("local", {session: false}, callback)
 }
+
+exports.isAuth = passport.authenticate("jwt", { session: false })
