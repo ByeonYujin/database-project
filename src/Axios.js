@@ -15,6 +15,4 @@ export const request = (method, url, data) => {
         data,
         headers
     })
-    .then(res => res.data)
-    .catch(err => console.log(err))
 }

@@ -85,21 +85,25 @@ export default class SignInForm extends Component {
             }) 
             // Retrieve a result (login or failed)
             .then(res => {
-                console.log(res)
-                if (res.success) {
-                    localStorage.setItem("token", res.token)
-                    history.push("/test")
-
-                    request("get", "auth/test").then(console.log)
-                }
-                else {
-                    this.setState({ msg: ERR_MSG.LOGIN_FAILED, valid: false })
-                    this.innerRef[EMAIL].current.focus()
+                if (res.status === 200) {
+                    localStorage.setItem("token", res.data.accessToken)
+                    history.push("/test") // To main page
+    
+                    request("get", "auth/test")
+                    .then(res => console.log(res.data)) // 토큰 인증 테스트 (회원 기반 서비스에 사용)
+                    .catch(console.log)
                 }
             })
             .catch(err => {
-                console.log("ERROR")
-                console.log(err.message)
+                const res = err.response
+
+                if (res.status === 401) {
+                    this.setState({ msg: ERR_MSG.LOGIN_FAILED, valid: false })
+                    this.innerRef[EMAIL].current.focus()
+                }
+                else {
+                    alert("로그인에 실패하였습니다. 잠시 후에 다시 시도해주세요.")
+                }
             })
         }
         else {

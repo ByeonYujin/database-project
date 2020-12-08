@@ -13,6 +13,16 @@ class AccountInput extends Component {
             data: "",
             err: ""
         }
+
+        this.inputProps = {}
+        for (const key in this.props.inputProps) {
+            if (typeof(this.props.inputProps[key]) === 'function') {
+                this.inputProps[key] = (event) => this.props.inputProps[key](event, this)
+            }
+            else {
+                this.inputProps[key] = this.props.inputProps[key]
+            }
+        }
     }
 
     componentDidMount() {
@@ -57,7 +67,10 @@ class AccountInput extends Component {
     }
 
     handleFocus = (event) => {
-        this.setState({ focused: event.type === 'focus' })
+        this.setState({ focused: true })
+    }
+    handleBlur = (event) => {
+        this.setState({ focused: false })
     }
 
     render() {
@@ -70,9 +83,9 @@ class AccountInput extends Component {
                             name={ this.props.name }
                             ref={ this.props.inheritedRef } 
                             onFocus={ this.handleFocus }
-                            onBlur={ this.handleFocus }
+                            onBlur={ this.handleBlur }
                             onChange={ this.updateData }
-                            onKeyPress={ this.props.keypress || (() => {}) }
+                            { ...this.inputProps }
                     />
                 </div>
             </div>

@@ -4,6 +4,7 @@ import { ForwardInput as Input } from "./Input";
 
 import Styles from "./css/Form.module.scss";
 import ContainerStyles from "./css/Container.module.scss";
+import { request } from "../Axios";
 
 const EMAIL = "email"
 const PASSWORD = "password"
@@ -109,12 +110,17 @@ export default class SignUp extends Component {
 
         if (this.state.valid) {
             // Register action dispatched
-            // Axios AJAX
-            // Retrieve a result (success or failed)
-    
-            // if success -> register and push to the main page
-            // else -> register failed error
-            console.log(this.state)
+            request("post", "auth/register", {
+                email: this.state[EMAIL],
+                password: this.state[PASSWORD],
+
+                zipcode: this.state[ZIPCODE],
+                province: this.state[SI],
+                city: this.state[GUN],
+                town: this.state[GU]
+            })
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err.response))
         }
         else {
             this.focusError()
@@ -125,18 +131,23 @@ export default class SignUp extends Component {
 
     render() {
         const update = { submitted: this.state.submitted, onUpdate: this.updateCallback }
+        const emailCallback = (event, self) => {
+            self.handleBlur(event)
+        }
 
         return (
         <form className={ `form-group ${ Styles.holder } ${ ContainerStyles.holder }` } onSubmit={ this.submit } noValidate>
             <h1>Sign up</h1>
             <p>Write your information for registration</p>
             <Input { ...update } 
-                type="email" icon="user" name={ EMAIL } rules={ EMAIL_RULE } ref={ this.innerRef[EMAIL] }>
+                type="email" icon="user" name={ EMAIL } rules={ EMAIL_RULE } ref={ this.innerRef[EMAIL] }
+                inputProps={{ onBlur: emailCallback }}>
                     EMAIL
             </Input>
             <br/>
             <Input { ...update } 
-                type="password" icon="lock" name={ PASSWORD } rules={ NOT_EMPTY_RULE } ref={ this.innerRef[PASSWORD] }>
+                type="password" icon="lock" name={ PASSWORD } rules={ NOT_EMPTY_RULE } ref={ this.innerRef[PASSWORD] }
+                inputProps={{maxLength: "50"}}>
                     PASSWORD
             </Input>
             <br/>
@@ -163,7 +174,7 @@ export default class SignUp extends Component {
                 type="text" icon="map-marker-alt" name={ ZIPCODE } 
                 rules={ [NOT_EMPTY_RULE, NUMBER_RULE] } 
                 ref={ this.innerRef[ZIPCODE] }
-                keypress= { isNumberKey }>
+                inputProps={{ onKeyPress: isNumberKey, maxLength: "5" }}>
                     ZIPCODE
             </Input>
             {
