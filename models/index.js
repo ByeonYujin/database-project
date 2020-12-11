@@ -21,5 +21,11 @@ db.Sequelize = Sequelize;
 db.Op = Op;
 
 db.user = require("./user.model")(sequelize);
+db.mean = require("./mean.model")(sequelize);
+db.product = require("./product.model")(sequelize);
+db.post = require("./post.model")(sequelize);
+db.like = require("./like.model")(sequelize);
+db.message = require("./message.model")(sequelize);
+
 
 module.exports = db;
