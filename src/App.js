@@ -1,12 +1,7 @@
 import React from "react";
 
+import './Font.css';
 import './App.css';
-<<<<<<< Updated upstream
-import Navigation from "./main/Navigation";
-import AccountContainer from "./account/Container";
-import Main from "./main/Main";
-import Write from "./main/Write";
-=======
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Navigation from "./main/Navigation";
@@ -14,7 +9,6 @@ import AccountContainer from "./account/Container";
 import Product from "./main/ProductThumbnail";
 import ImageTest from "./main/ImageUpload";
 import EditorTest from "./main/PostEditor";
->>>>>>> Stashed changes
 
 function App() {
   return (

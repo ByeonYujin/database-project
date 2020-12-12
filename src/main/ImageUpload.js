@@ -4,7 +4,7 @@ import Styles from "./css/test.module.scss";
 import { request } from "../Axios";
 
 const supported_type = [ "image/x-png", "image/png", "image/jpg", "image/jpeg", "image/webp" ]
-const max_count = 3
+const max_count = 10
 
 export default class ImageUpload extends Component {
     constructor(props) {
@@ -12,13 +12,14 @@ export default class ImageUpload extends Component {
         this.state = {
             images: []
         }
+
+        this.uploadRef = React.createRef()
     } 
 
     handleSubmit = (event) => {
         event.preventDefault()
         
         const formData = new FormData()
-
         for (const image of this.state.images) {
             formData.append("images", image.file)
         }
@@ -28,6 +29,13 @@ export default class ImageUpload extends Component {
             console.log(res)
         }) 
         .catch(console.log)
+    }
+
+    forwardUpload = (event) => {
+        event.preventDefault()
+
+        this.uploadRef.current.click()
+        event.stopPropagation()
     }
 
     handleImageChange = (event) => {
@@ -71,8 +79,9 @@ export default class ImageUpload extends Component {
     render() {
         return (
             <form id={ Styles.form } onSubmit={ this.handleSubmit } runat="server">
-                <input type='file' multiple accept={ supported_type.join(",") } onChange={ this.handleImageChange }/>
+                <input type='file' multiple accept={ supported_type.join(",") } onChange={ this.handleImageChange } ref={ this.uploadRef } style={{ display: "none" }}/>
                 <br/>
+                <div id={ Styles.images }>
                 { 
                     this.state.images.length > 0 
                     && 
@@ -81,7 +90,9 @@ export default class ImageUpload extends Component {
                         <img key={`Preview-${i}`} src={ this.state.images[i].preview } alt={`Preview ${i}`} width="300" height="300"/>
                     )
                 }
-                <button type='submit'>Upload!</button>
+                </div>
+                <button className="btn btn-secondary" onClick={ this.forwardUpload }>Upload</button>
+                <button className="btn btn-primary" type='submit'>Submit!</button>
             </form>
         );
     }
