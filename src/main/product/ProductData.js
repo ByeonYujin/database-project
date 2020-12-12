@@ -1,6 +1,6 @@
 const connected = true
 
-export default class PostData {
+export default class ProductData {
     constructor(productId, cachedData, onFinished) {
         this.success = false
 

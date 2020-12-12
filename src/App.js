@@ -7,8 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navigation from "./main/Navigation";
 import AccountContainer from "./account/Container";
 import Product from "./main/ProductThumbnail";
-import ImageTest from "./main/ImageUpload";
-import EditorTest from "./main/PostEditor";
+import EditorTest from "./main/Product/ProductEditor";
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Route path="/" exact={ true } component={ Navigation }/>
           <Route path="/login" component={ AccountContainer }/>
           <Route path="/main" component={ Product }/>
-          <Route path="/test/image" component={ ImageTest }/>
           <Route path="/test/editor" component={ EditorTest }/>
         </Switch>
       </Router>
