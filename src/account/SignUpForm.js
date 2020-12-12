@@ -83,6 +83,7 @@ export default class SignUp extends Component {
     }
 
     updateCallback = (caller, data, err) => {
+        if (err) console.log(err)
         this.setState((state) => ({
             [caller]: data,
             err: {
@@ -147,7 +148,10 @@ export default class SignUp extends Component {
                 alert("성공적으로 회원가입되셨습니다. 로그인해주시기 바랍니다.")
                 window.location.reload() // Reload the login page
             })
-            .catch(err => console.log(err.response))
+            .catch(err => {
+                console.log(err)
+                alert("회원가입에 실패하였습니다. 나중에 다시 시도해주세요.")
+            })
         }
         else {
             this.focusError()
@@ -164,9 +168,7 @@ export default class SignUp extends Component {
             if (self.isValid()) {
                 request("post", AJAX, { email: self.state.data })
                 .catch(err => {
-                    self.setState({ err: err.response.data.message }, 
-                        () => self.props.onUpdate(self.props.name, self.state.data, self.state.err)
-                    )
+                    this.setState(state => ({ err: { ...state.err, [EMAIL]: ALREADY_SIGNED } }))
                 })
             }
         }

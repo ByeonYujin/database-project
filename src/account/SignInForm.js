@@ -96,7 +96,7 @@ export default class SignInForm extends Component {
             .catch(err => {
                 const res = err.response
 
-                if (res.status === 401) {
+                if (res && res.status === 401) {
                     for (let rule of this.rulePriority) {
                         this.setState(state => ({
                             err: {
@@ -109,12 +109,14 @@ export default class SignInForm extends Component {
                     this.innerRef[EMAIL].current.focus()
                 }
                 else {
+                    console.log(err)
                     alert("로그인에 실패하였습니다. 잠시 후에 다시 시도해주세요.")
                 }
             })
         }
         else {
             this.focusError()
+            return false
         }
 
         return true

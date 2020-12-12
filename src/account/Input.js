@@ -39,7 +39,9 @@ class AccountInput extends Component {
         return msg
     }
 
-    notifyChangesToParent = () => this.props.onUpdate(this.props.name, this.state.data, this.checkRules())
+    notifyChangesToParent = () => {
+        this.props.onUpdate(this.props.name, this.state.data, this.checkRules())
+    }
 
     componentDidMount() {
         // for initial state, notify initial error to parent

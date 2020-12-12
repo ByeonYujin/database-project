@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#product {
+    font-family: 'S-CoreDream-3Light', 'Nanum Gothic', sans-serif;
+    margin: 0.5rem;
+    width: 250px;
+    text-align: left;
+
+    h4 {
+        padding-bottom: 0.2rem;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    #title {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+    #price {
+        max-width: 80%;
+        font-weight: 800;
+    }
+    #unit {
+        margin-left: 0.5rem;
+        font-weight: 800;
+    }
+    p {
+        margin: 0;
+        margin-bottom: .4rem;
+    }
+
+    & > img {
+        width: 95%;
+        height: 95%;
+
+        margin: 0 2.5% 1rem;
+        border-radius: 2rem;
+    }
+}
+
+#meta {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: nowrap;
+
+    span {
+        opacity: 0.7;
+        font-size: 0.85rem;
+        margin-right: auto;
+    }
+    img {
+        margin-left: .5rem;
+        width: 30px;
+        height: 30px;
+    }
+    &::after {
+        clear: both;
+    }
+}

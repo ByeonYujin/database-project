@@ -31,7 +31,7 @@ export default class Navigation extends React.Component {
         return <React.Fragment>
 
         <nav id={ Styles.main_nav }
-             className={ "d-flex flex-row align-items-center p-3 " + Styles.no_select }>
+             className="d-flex flex-row align-items-center p-3 no-select">
             
             <div id={ Styles.brand } className="d-flex flex-row align-items-center ml-3">
                 <img src={ LOGO } alt="Logo"/>
