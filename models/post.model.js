@@ -1,69 +1,35 @@
 const { DataTypes } = require("sequelize");
-const meanModel = require("./mean.model");
-const productModel = require("./product.model");
-const userModel = require("./user.model");
 
 const name = "post";
 const schema = {
-    // 게시물 고유 UUID
-    post_Id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-    },
 
-    // 카테고리
-    category: {
+    // 제품 게시글 고유 UUID
+    postId: {
         type: DataTypes.UUID,
-        allowNull: false
+        primaryKey: true,
+        defaultValue: DataTypes.UUIDV4
     },
 
     // 글 제목
     title: {
-        type: DataTypes.STRING(30),
+        type: DataTypes.STRING(50),
         allowNull: false
     },
 
     // 글 내용(설명)
-    content: {
-        type: DataTypes.STRING,
+    context: {
+        type: DataTypes.TEXT('medium'),
         allowNull: true
     },
-    
 
-    // 판매상품(fk)
-    product: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: productModel,
-            key: 'product_Id'
-          }
-    },
+    // 게시글 삭제 여부 정보
+    deletedAt: {
+        type: DataTypes.TIME,
+        allowNull: true
+    }
 
-    // 작성자(fk)
-    writer: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        references: {
-            model: userModel,
-            key: 'user_Id'
-          }
-    },
-
-    // 거래수단
-    mean: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-        references: {
-            model: meanModel,
-            key: 'mean_Id'
-          }
-    },
 }
 const opts = {
-    underscored: true,
     timestamps: true
 }
 

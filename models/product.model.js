@@ -2,34 +2,39 @@ const { DataTypes } = require("sequelize");
 
 const name = "product";
 const schema = {
-    // 상품 id
-    product_Id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
-    },
-
-    // 상품명
-    product_Name: {
-        type: DataTypes.STRING(50),
-        allowNull: false,
-    },
-
     // 가격
     price: {
-        type: DataTypes.STRING(50),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
 
-    // 거래상태
-    soldOut: {
+    // 직거래 여부
+    direct: {
         type: DataTypes.BOOLEAN,
-        defaultValue: 0,
         allowNull: false
+    },
+    // 택배 배송 여부
+    indirect: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: {
+            mustDeliver(value) {
+                if (!value && !this.direct) {
+                    throw new Error("Customers must choose the delivery option.")
+                }
+            }
+        }
+    },
+    
+    // 거래 완료 여부
+    soldout: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
 }
 const opts = {
-    underscored: true
+    timestamps: false
 }
 
 module.exports = (sequelize) => {

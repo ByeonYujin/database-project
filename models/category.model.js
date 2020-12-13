@@ -17,13 +17,10 @@ const schema = {
     }
 }
 const opts = {
-    underscored: false,
     timestamps: false
 }
 
 module.exports = (sequelize) => {
     const category = sequelize.define(name, schema, opts)
-    category.hasOne(category, { as: "parent" })
-
     return category
 };
