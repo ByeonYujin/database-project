@@ -1,6 +1,6 @@
 const API_URL = "/api/auth"
 
-const isAuth = require("../passport/passport.auth").isAuth;
+const isAuth = require("../passport").isAuth;
 const controller = require("../controllers/auth.controller");
 
 const router = require("express").Router();

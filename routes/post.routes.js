@@ -1,7 +1,8 @@
 const API_URL = "/api/post"
 
-const router = require("express").Router()
-// const MultipartMiddleware = require("connect-multiparty")()
+const router = require("express").Router();
+
+const authMiddleware = require("../passport");
 
 const multer = require("multer");
 const storage = multer.memoryStorage();
@@ -10,10 +11,11 @@ const storage = multer.memoryStorage();
 const ALLOW_MAXSIZE = process.env.MAX_IMAGE_SIZE * 1024 * 1024; 
 const ImageMiddleware = multer({ storage: storage, limits: { fileSize: ALLOW_MAXSIZE }})
 
-// TEST CODE
-// const imgController = require("../controllers/image.controller")
+const imgController = require("../controllers/image.controller")
 const postController = require("../controllers/post.controller")
-router.post("/test", ImageMiddleware.array("images", 10), postController.upload) // imgController.upload, imgController.reserved)
+
+router.post("/upload", authMiddleware.isAuth, ImageMiddleware.array("images", 10), imgController.upload, postController.upload) // imgController.upload, imgController.reserved)
+router.get("/category", postController.getCategories)
 // END
 
 module.exports = (app) => {

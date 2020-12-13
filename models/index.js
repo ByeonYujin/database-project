@@ -43,7 +43,7 @@ db.product = require("./product.model")(sequelize);
     // 제품 belongs to 카테고리 (N:1)
     db.product.belongsTo(db.category, { foreignKey: { name: "category", allowNull: false }, as: "cat" })
     // 제품 has one 게시글 (1:1)
-    db.product.hasOne(db.post, { foreignKey: "sell" })
+    db.product.hasOne(db.post, { foreignKey: "sell", allowNull: false })
 
 // 사용자 likes 게시글 (M:N)
 db.like = require("./like.model")(sequelize);

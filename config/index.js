@@ -21,5 +21,6 @@ module.exports = {
     auth: {
         jwtSecret: process.env.JWT_SECRET || "secret",
         expires: process.env.TOKEN_EXPIRED || "30m"
-    }
+    },
+    linkSecret: process.env.LINK_SECRET
 }

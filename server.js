@@ -25,7 +25,7 @@ db.sequelize.sync();
 const passport = require("passport");
 app.use(passport.initialize());
 // Passport strategy 등록
-require("./passport")();
+require("./passport/strategy")();
 
 // App의 route 설정
 require("./routes")(app);
