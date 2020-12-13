@@ -6,8 +6,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Navigation from "./main/Navigation";
 import AccountContainer from "./account/Container";
-import Product from "./main/ProductThumbnail";
-import EditorTest from "./main/Product/ProductEditor";
+
+import Product from "./main/product/ProductThumbnail";
+import EditorTest from "./main/product/ProductEditor";
 
 function App() {
   return (

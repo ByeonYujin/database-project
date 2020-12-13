@@ -1,4 +1,4 @@
-const connected = true
+import { request } from "../../Axios";
 
 export default class ProductData {
     constructor(productId, cachedData, onFinished) {
@@ -26,23 +26,15 @@ export default class ProductData {
         .finally(onFinished)
     }
 
-    getAvailableCategories = async () => {
+    getAvailableCategories = () => {
         // Getting data with Ajax
-        const loaded = await new Promise((resolve, reject) => {
-            if (connected) {
-                resolve({ a: ["b", "c"], d: ["e", "f"] })
-            }
-            else {
-                reject({ cause: "CAT_LOAD_FAILED" })
-            }
-        }) 
-        return loaded
+        return request("get", "post/category").then(res => res.data)
     }
 
     getDataFromServer = async (productId) => {
         // Getting data with Ajax
         const loaded = await new Promise((resolve, reject) => {
-            if (connected) {
+            if (true) {
                 resolve({ test: productId })
             }
             else {
