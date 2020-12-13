@@ -1,5 +1,6 @@
 const db = require("../models");
 const secure = require("../security");
+const baseurl = require('url-safe-base64');
 
 const categories = {}
 const catIds = {}
@@ -88,4 +89,22 @@ exports.upload = (req, res, next) => {
         return res.status(200).send({ linkTo: secure.encrypt(req.postId) })
     })
     .catch(console.log)
+}
+
+exports.loadPage = (req, res) => {
+
+}
+
+exports.loadPost = (req, res) => {
+    if (req.params.id && baseurl.isUrlSafeBase64(req.params.id)) {
+        try {
+            let pid = secure.decrypt(req.params.id)
+            if (secure.isUUID(pid)) {
+                pid = secure.parseUUID(pid)
+
+                return res.status(200).send({ productId: pid })
+            }
+        } catch (err) {}
+    }
+    return res.status(404).send({ err: "page not found" })
 }

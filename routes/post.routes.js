@@ -20,4 +20,6 @@ router.get("/category", postController.getCategories)
 
 module.exports = (app) => {
     app.use(API_URL, router);
+
+    app.get("/product/:id", postController.loadPost)
 }

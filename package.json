@@ -26,7 +26,8 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "url-safe-base64": "^1.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
