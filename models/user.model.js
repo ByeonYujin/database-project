@@ -43,7 +43,6 @@ const schema = {
     }
 }
 const opts = {
-    underscored: true,
     timestamps: true
 }
 

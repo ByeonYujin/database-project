@@ -1,3 +1,5 @@
+const API_URL = "/api/auth"
+
 const isAuth = require("../passport/passport.auth").isAuth;
 const controller = require("../controllers/auth.controller");
 
@@ -10,5 +12,5 @@ router.post("/signed", controller.dupeAjax);
 router.get("/test", isAuth, controller.test);
 
 module.exports = (app) => {
-    app.use("/api/auth", router);
+    app.use(API_URL, router);
 }

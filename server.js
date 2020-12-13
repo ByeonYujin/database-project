@@ -28,8 +28,7 @@ app.use(passport.initialize());
 require("./passport")();
 
 // App의 route 설정
-require("./routes/auth.routes")(app);
-
+require("./routes")(app);
 
 // 서버 가동
 const PORT = process.env.PORT || 8000;
