@@ -26,6 +26,7 @@ db.product = require("./product.model")(sequelize);
 db.post = require("./post.model")(sequelize);
 db.like = require("./like.model")(sequelize);
 db.message = require("./message.model")(sequelize);
+db.category = require("./category.model")(sequelize);
 
 
 module.exports = db;
