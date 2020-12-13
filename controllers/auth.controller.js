@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Joi = require("joi");
 const JoiPW = require("joi-password-complexity").default;
-const auth = require("../passport/passport.auth");
+const auth = require("../passport");
 const db = require("../models");
 
 const bcrypt = require("bcrypt");

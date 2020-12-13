@@ -24,12 +24,3 @@ exports.upload = (req, res, next) => {
         return res.status(400).send({ msg: "file not found" })
     }
 }
-
-exports.reserved = (req, res) => {
-    if (req.imgURLs) {
-        for (const url of req.imgURLs) {
-            console.log(url)
-        }
-    }
-    return res.status(200).send({ msg: "successfully uploaded" })
-}
