@@ -13,6 +13,7 @@ const numberWithCommas = (x) => {
 export default function ProductThumbnail(props) {
 
     return (
+
         <div id={ Styles.product } className="no-select" >
             <img src={ NO_IMAGE } alt="ProductImage"></img>
             <h4 id={ Styles.title }>Very Very Long Product Name</h4>

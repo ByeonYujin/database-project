@@ -9,6 +9,8 @@ import AccountContainer from "./account/Container";
 
 import Product from "./main/product/ProductThumbnail";
 import EditorTest from "./main/product/ProductEditor";
+import MyPage from "./main/mypage/MyPage";
+import SendMessage from "./main/message/SendMessage";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/login" component={ AccountContainer }/>
           <Route path="/main" component={ Product }/>
           <Route path="/test/editor" component={ EditorTest }/>
+          <Route path="/mypage" component={ MyPage }></Route>
+          <Route path="/test/message" component={ SendMessage }></Route>
         </Switch>
       </Router>
     </React.Fragment>
