@@ -9,7 +9,7 @@ router.post("/login", controller.signIn);
 router.post("/register", controller.signUp);
 router.post("/signed", controller.dupeAjax);
 
-router.get("/test", isAuth, controller.test);
+router.get("/member", isAuth, controller.member);
 
 module.exports = (app) => {
     app.use(API_URL, router);

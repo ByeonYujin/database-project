@@ -108,6 +108,11 @@ exports.dupeAjax = async (req, res) => {
     }
 }
 
-exports.test = (req, res) => {
-    res.send(req.user)
+exports.member = (req, res) => {
+    if (req.user) {
+        return res.status(200).send({ member: true })
+    }
+    else {
+        return res.status(401).send({ member: false })
+    }
 };

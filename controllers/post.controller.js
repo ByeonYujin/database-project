@@ -258,15 +258,117 @@ exports.loadPage = (req, res) => {
 }
 
 exports.loadPost = (req, res) => {
+    db.post.findOne({
+        where: {
+            postId: req.pid,
+            deletedAt: {
+                [db.Op.eq]: null
+            }
+        },
+        attributes: [ "title", "context", "createdAt", "updatedAt" ],
+        include: [
+            {
+                model: db.product,
+                required: true,
+                attributes: [ "price", "direct", "indirect", "soldout", "category" ]
+            },
+            {
+                model: db.user,
+                required: true,
+                attributes: [ "email", "profile", "province", "city", "town" ]
+            },
+            {
+                model: db.image,
+                required: true,
+                order: [["imgId", "ASC"]],
+                attributes: [ "url" ]
+            }
+        ]
+    })
+    .then(p => {
+        const result = {}
+    
+        const post = p.dataValues
+        const product = p.product.dataValues
+        const writer = p.user.dataValues
+    
+        result.images = []
+        for (const img of post.images) {
+            result.images.push(img.dataValues.url)
+        }
+        result.title = post.title
+        result.context = post.context
+
+        result.created = post.createdAt
+        result.updated = post.updatedAt
+
+        result.price = product.price
+        result.soldout = product.soldout
+        result.direct = product.direct
+        result.indirect = product.indirect
+            
+        // Awful but no time
+        for (const name in catIds) {
+            if (parseInt(catIds[name]) === product.category) {
+                result.childCat = name
+                break
+            }
+        }
+        for (const parent in categories) {
+            if (categories[parent].includes(result.childCat)) {
+                result.parentCat = parent
+                break
+            }
+        }
+
+        result.writer = writer.email
+        result.profile = writer.profile
+        result.province = writer.province
+        result.city = writer.city
+        result.town = writer.town
+
+        const _nums = [
+            db.like.count({
+                where: {
+                    post: req.pid
+                }
+            }),
+            db.message.count({
+                where: {
+                    target: req.pid
+                }
+            })
+        ]
+        return Promise.all(_nums).then(nums => {
+            result.likeNum = nums[0]
+            result.chatNum = nums[1]
+
+            return result
+        })
+    })
+    .then(results => {
+        return res.status(200).send({ payload: results });
+    })
+    .catch(err => {
+        console.log(err)
+        return res.status(400).send({ err: "not exist" });
+    });
+} 
+
+exports.checkPostId = (req, res, next) => {
     if (req.params.id && baseurl.isUrlSafeBase64(req.params.id)) {
         try {
             let pid = secure.decrypt(req.params.id)
             if (secure.isUUID(pid)) {
                 pid = secure.parseUUID(pid)
-
-                return res.status(200).send({ productId: pid })
+                req.pid = pid
+                next();
             }
-        } catch (err) {}
+        } catch (err) {
+            return res.status(404).send({ err: "page not found" })
+        }
     }
-    return res.status(404).send({ err: "page not found" })
+    else {
+        return res.status(404).send({ err: "page not found" })
+    }
 }

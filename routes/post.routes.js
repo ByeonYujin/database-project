@@ -16,11 +16,13 @@ const postController = require("../controllers/post.controller")
 
 router.post("/upload", authMiddleware.isAuth, ImageMiddleware.array("images", 10), imgController.upload, postController.upload) // imgController.upload, imgController.reserved)
 router.get("/page", postController.loadPage)
+
 router.get("/category", postController.getCategories)
+router.get("/count", postController.getPageNumbers)
+
+router.post("/content/:id", postController.checkPostId, postController.loadPost)
 // END
 
 module.exports = (app) => {
     app.use(API_URL, router);
-
-    app.get("/product/:id", postController.loadPost)
 }
