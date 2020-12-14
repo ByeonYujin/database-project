@@ -1,11 +1,6 @@
-.Mains {
-  display: grid;
-  grid-template-columns: 19% 62% 19%;
-}
+.main-container {
+  font-family: 'S-CoreDream-3Light', 'Nanum Gothic', sans-serif;
 
-#Mains-left {
-  border-right: solid 1px #aabbaa;
-}
-#Mains-right {
-  border-left: solid 1px #aabbaa;
+  width: 60vw;
+  margin: 0 auto;
 }

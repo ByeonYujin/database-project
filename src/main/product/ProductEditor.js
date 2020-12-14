@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import Data from "./ProductData";
+import CategoryFetch from "./CategoryData";
 import { request } from "../../Axios"
 
 import Styles from "./css/editor.module.scss";
+import history from "../../history";
 
 const PLACEHOLDER = "placeholder";
 
@@ -52,7 +53,7 @@ export default class PostEditor extends Component {
     }
 
     componentDidMount() {
-        this.data = new Data(this.props.productId, this.props.productData, this.retrieveData)
+        this.data = new CategoryFetch(this.retrieveData)
     }
 
     retrieveData = () => {
@@ -191,7 +192,7 @@ export default class PostEditor extends Component {
     render() {
         return (
         <React.Fragment>
-            <h3 id={ Styles.editorTitle }>상품 등록</h3>
+            <h2 id={ Styles.editorTitle }>상품 등록</h2>
             <form id={ Styles.editor } className="no-select" onSubmit={ this.submitPost }>
 
                 <div id={ Styles.categories } className="d-flex">
@@ -276,7 +277,7 @@ export default class PostEditor extends Component {
                 <hr className={ Styles.separator }/>
                 <div id={ Styles.submit }>
                     <button className="btn btn-success" type="submit">Submit</button>
-                    <button className="btn btn-secondary" type="button">Cancel</button>
+                    <button className="btn btn-secondary" type="button" onClick={ () => history.goBack() }>Cancel</button>
                 </div>
             </form>
         </React.Fragment>

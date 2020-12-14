@@ -56,6 +56,9 @@
         width: 30px;
         height: 30px;
     }
+    img:last-child {
+        margin-right: 0.45rem;
+    }
     img.disable {
         opacity: 0.2;
     }

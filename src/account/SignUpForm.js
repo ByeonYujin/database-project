@@ -83,7 +83,6 @@ export default class SignUp extends Component {
     }
 
     updateCallback = (caller, data, err) => {
-        if (err) console.log(err)
         this.setState((state) => ({
             [caller]: data,
             err: {
@@ -127,8 +126,7 @@ export default class SignUp extends Component {
 
     submit = (event) => {
         event.preventDefault()
-        console.log(this.state.err)
-
+        
         this.setState({ submitted: true })
 
         if (this.isValid()) {

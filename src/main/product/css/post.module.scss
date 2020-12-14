@@ -1,0 +1,30 @@
+#metaInfo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin: 1rem;
+
+    .trade_btn {
+        width: 4rem;
+        label {
+            font-family: 'S-CoreDream-3Light', 'Nanum Gothic', sans-serif;
+            margin: 0;
+        }
+        img {
+            pointer-events: none;
+        }
+
+        img, label {
+            opacity: 0.2;
+            transition-duration: 0.2s;
+            transition-timing-function: ease-out;
+        }
+    }
+    
+    .trade_btn.selected {
+        img, label {
+            opacity: 1;
+        }
+    }
+}
