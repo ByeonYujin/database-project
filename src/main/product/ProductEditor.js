@@ -172,7 +172,7 @@ export default class PostEditor extends Component {
     
         request("post", "post/upload", formData, { 'Content-Type': 'multipart/form-data' } )
         .then(res => {
-            window.location.replace(`/product/${res.data.linkTo}`)
+            window.location.replace(`/product?id=${res.data.linkTo}`)
         }) 
         .catch(err => {
             if (err.response) {

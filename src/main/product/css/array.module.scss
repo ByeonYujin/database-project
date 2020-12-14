@@ -1,0 +1,31 @@
+@import "bootstrap";
+
+$brand-color:#7D2248;
+.btn_upload {
+    @extend .btn;
+    @include button-variant($brand-color, darken($brand-color, 1%), darken($brand-color, 3%), lighten($brand-color,8%), lighten($brand-color, 15%), darken($brand-color, 8%));
+    color: #fff;
+}
+
+#container {
+    font-family: 'S-CoreDream-3Light', 'Nanum Gothic', sans-serif;
+
+    width: 60vw;
+    margin: 0 auto;
+
+    #upload {
+        border-radius: 10px;
+    }
+}
+
+#array {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, 220px);
+
+    column-gap: 5px;
+    row-gap: 1rem;
+
+    justify-content: space-evenly;
+    align-items: center;
+}
