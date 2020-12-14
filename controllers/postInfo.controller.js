@@ -5,20 +5,19 @@ const postInfo = {}
 
 db.post.findAll ({
     where: {
-        postId: {
-            loadPost
-        }
+        postId: loadPost
     },
     include :[
         {
             model: db.like,
             required: false,
-            attributes: ['user']
+            attributes: ["user"],
+            where: {post: loadPost}
         },
         {
             model: db.user,
             required: false,
-            attributes: ['province', 'city', 'town'],
+            attributes: ["province", "city", "town"]
         },
         {
             model: db.product,
@@ -31,7 +30,7 @@ db.post.findAll ({
             attributes: ['messageId']
         },
         {
-            model: db.image,
+            model: db.images,
             required: false,
             attributes: ['url']
         }
@@ -45,8 +44,12 @@ db.post.findAll ({
     console.error(err);
  });
 
+ exports.getAll = (req, res) => {
+     return res.status(200).send(JSON.stringify(postInfo))
+ }
+
  exports.getImages = (req, res) => {
-    const image = postInfo.image.url
+    const image = postInfo.images.url
     return res.status(200).send(JSON.stringify(image))
 }
 
@@ -61,31 +64,31 @@ exports.getPrice = (req, res) => {
 }
 
 exports.getUserAddress = (req, res) => {
-    const province = postInfo.user.province
-    const city = postInfo.user.city
-    const town = postInfo.user.town
-    const address = province + city + town
+    const province = postInfo.users.province
+    const city = postInfo.users.city
+    const town = postInfo.users.town
+    const address = {province, city, town}
     return res.status(200).send(JSON.stringify(address))
 }
 
 exports.getLikeNum = (req, res) => {
-    const likeNum = postInfo.like.length
+    const likeNum = postInfo.likes.length
     return res.status(200).send(JSON.stringify(likeNum))
 }
 
 exports.getChatNum = (req, res) => {
-    const chatNum = postInfo.message.messageId.length
+    const chatNum = postInfo.messages.messageId.length
     return res.status(200).send(JSON.stringify(chatNum))
 }
 
 exports.getChatUrl = (req, res) => {
-    const chatUrl = postInfo.message.messageId
+    const chatUrl = postInfo.messages.messageId
     return res.status(200).send(JSON.stringify(chatUrl))
 }
 
 exports.getMeans = (req, res) => {
-    const direct = postInfo.product.direct || false
-    const indirect = postInfo.product.indirect || false
+    const direct = postInfo.products.direct || false
+    const indirect = postInfo.products.indirect || false
     const mean = {direct, indirect}
     return res.status(200).send(JSON.stringify(mean))
 }
