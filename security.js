@@ -11,7 +11,7 @@ exports.encrypt = (uid) => {
     let encrypted = cipher.update(uid.replace(/-/gi, ""), 'utf8', 'base64');
     encrypted += cipher.final('base64');
 
-    return baseurl.trim(baseurl.encode(baseurl))
+    return baseurl.trim(baseurl.encode(encrypted))
 }
 
 exports.decrypt = (encrypted) => {

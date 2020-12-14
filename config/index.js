@@ -22,5 +22,8 @@ module.exports = {
         jwtSecret: process.env.JWT_SECRET || "secret",
         expires: process.env.TOKEN_EXPIRED || "30m"
     },
-    linkSecret: process.env.LINK_SECRET
+    
+    maxImageSize: parseInt(process.env.MAX_IMAGE_SIZE) || 5,
+    linkSecret: process.env.LINK_SECRET || "secret",
+    postsPerPage: parseInt(process.env.POST_PER_PAGE) || 10
 }

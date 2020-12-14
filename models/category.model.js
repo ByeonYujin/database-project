@@ -21,6 +21,6 @@ const opts = {
 }
 
 module.exports = (sequelize) => {
-    const category = sequelize.define(name, schema, opts)
-    return category
+    const category = sequelize.define(name, schema, opts);
+    return category;
 };

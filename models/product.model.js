@@ -38,6 +38,7 @@ const opts = {
 }
 
 module.exports = (sequelize) => {
-    const product = sequelize.define(name, schema, opts)
+    const product = sequelize.define(name, schema, opts);
+
     return product
 };
