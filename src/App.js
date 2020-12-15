@@ -9,7 +9,7 @@ import AccountContainer from "./account/Container";
 import Main from "./main";
 import Editor from "./main/Editor";
 
-import TestPost from "./main/product/ProductPost";
+import Post from "./main/Post";
 
 import MyPage from "./main/mypage/MyPage";
 import SendMessage from "./main/message/SendMessage";
@@ -23,7 +23,7 @@ function App() {
 
           <Route path="/main/:page?" component={ Main }/>
           <Route path="/edit/:page?" component={ Editor }/>
-          <Route path="/product/:id" component={ TestPost }/>
+          <Route path="/product/:id" component={ Post }/>
 
           <Route path="/mypage" component={ MyPage }></Route>
           <Route path="/test/message" component={ SendMessage }></Route>

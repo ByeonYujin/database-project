@@ -1,30 +1,127 @@
+#product {
+  // pointer-events: none;
+
+  font-family: "S-CoreDream-3Light", "Nanum Gothic", sans-serif;
+  margin: 0.5rem;
+  width: 600px;
+  text-align: left;
+
+  h4 {
+    padding-bottom: 0.2rem;
+
+    margin: 0 2.5% 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  #price {
+    max-width: 80%;
+    font-weight: 800;
+  }
+  #unit {
+    margin-left: 0.5rem;
+    font-weight: 800;
+  }
+  p {
+    margin: 0 2.5% 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  & > img {
+    object-fit: cover;
+    background-color: rgba(0, 0, 0, 0.05);
+
+    width: 95%;
+
+    margin: 0 2.5% 1rem;
+    border-radius: 1.5rem;
+  }
+
+  text {
+    margin: 0 2.5% 1rem;
+  }
+
+  h2 {
+    margin: 0 2.5% 1rem;
+  }
+}
+
 #metaInfo {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 
-    margin: 1rem;
+  margin: 1rem;
 
-    .trade_btn {
-        width: 4rem;
-        label {
-            font-family: 'S-CoreDream-3Light', 'Nanum Gothic', sans-serif;
-            margin: 0;
-        }
-        img {
-            pointer-events: none;
-        }
-
-        img, label {
-            opacity: 0.2;
-            transition-duration: 0.2s;
-            transition-timing-function: ease-out;
-        }
+  .trade_btn {
+    width: 4rem;
+    label {
+      font-family: "S-CoreDream-3Light", "Nanum Gothic", sans-serif;
+      margin: 0;
     }
-    
-    .trade_btn.selected {
-        img, label {
-            opacity: 1;
-        }
+    img {
+      pointer-events: none;
     }
+
+    img,
+    label {
+      opacity: 0.2;
+      transition-duration: 0.2s;
+      transition-timing-function: ease-out;
+    }
+  }
+
+  .trade_btn.selected {
+    img,
+    label {
+      opacity: 1;
+    }
+  }
+}
+#metaInfo {
+  display: flex;
+  align-items: flex-end;
+  span {
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-right: auto;
+  }
+  img {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin: 0 2.5% 1rem;
+  }
+}
+
+#meta {
+  //   display: flex;
+  //   align-items: flex-end;
+  //   flex-wrap: nowrap;
+
+  span {
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-right: auto;
+  }
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 70%;
+    overflow: hidden;
+    margin: 0 2.5% 1rem;
+  }
+  // img:last-child {
+  //     margin-right: 0.45rem;
+  // }
+  // img.disable {
+  //     opacity: 0.2;
+  // }
+  &::after {
+    clear: both;
+  }
 }

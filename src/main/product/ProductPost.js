@@ -4,6 +4,7 @@ import { request } from "../../Axios";
 import Spinner from "../Spinner";
 
 import Styles from "./css/thumbnail.module.scss";
+import Styles2 from "./css/post.module.scss";
 
 const NO_IMAGE = process.env.PUBLIC_URL + "/no-image.png"
 const IMAGE_HEAD = "https://res.cloudinary.com/"
@@ -21,6 +22,7 @@ function Post(props) {
         request("post", `post/content/${props.match.params.id}`)
         .then(res => {
             setPayload(res.data.payload)
+            console.log(payload)
         })
         .catch(err => {
             console.log(err)
@@ -41,23 +43,28 @@ function Post(props) {
                 !loading ? 
                     <Spinner/>
                     :
-                    <div>
+                    <div id={ Styles2.product }>
                         <img src={ IMAGE_HEAD + payload.images[0] } alt="preview"/>
                         <p>{ payload.parentCat } &gt; { payload.childCat }</p>
                         <h2>{ payload.title }</h2>
                         <hr/>
-                        <div>
+                        <div id={Styles.meta}>
                             <img src={ payload.profile ? payload.profile : NO_IMAGE } alt="profile"/>
-                            <h4>{ payload.writer }</h4>
-                            <p>{ payload.province } { payload.city } { payload.town }</p>
-                            <p>가격 : { numberWithCommas( payload.price) } 원</p>
+                            <p>{ payload.writer }<br/>
+                            { payload.province } { payload.city } { payload.town }
+                            <br/></p>
+                            <h4>가격 : { numberWithCommas( payload.price) } 원</h4>
                         </div>
                         <hr/>
+                        {/* <h4>상세</h4> */}
+                        <div id={Styles.meta2}>
                         <h4>상세</h4>
-                        <text>{ payload.context }</text>
                         <p>{ payload.created }</p>
-
-                        <div id={ Styles.metaInfo }>
+                         </div>
+                         <text>{ payload.context }</text>
+                        {/* <text>{ payload.context }</text>
+                        <p>{ payload.created }</p> */}
+                        <div id={ Styles.meta3 }>
                             <div name="direct" className={`${ Styles.trade_btn } ${ payload.direct ? Styles.selected : "" } text-center`}>
                                 <img src={ DIRECT } alt="Direct" width="35" height="35"></img>
                                 <br/>
